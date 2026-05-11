@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Placeholder">
+  <rect width="800" height="600" fill="#e5e7eb"/>
+  <g fill="#9ca3af">
+    <rect x="0" y="0" width="800" height="600" fill="none" stroke="#d1d5db" stroke-width="2"/>
+    <text x="400" y="305" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="40" font-weight="600" text-anchor="middle" dominant-baseline="middle">Placeholder</text>
+    <text x="400" y="350" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle" fill="#6b7280">800 x 600</text>
+  </g>
+</svg>
