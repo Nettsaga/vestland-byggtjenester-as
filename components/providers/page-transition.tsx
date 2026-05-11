@@ -31,9 +31,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         el,
-        { opacity: 0 },
+        { autoAlpha: 0 },
         {
-          opacity: 1,
+          autoAlpha: 1,
           duration: 0.55,
           ease: "power3.out",
           onComplete: () => ScrollTrigger.refresh(),
@@ -45,7 +45,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   return (
-    <div ref={ref} style={{ opacity: 0 }}>
+    <div ref={ref}>
       {children}
     </div>
   );

@@ -26,21 +26,6 @@ export function AboutPage() {
   const approvalsLinkLabel = approvals
     ? tc("content.about.approvals.linkLabel", approvals.linkLabel)
     : null;
-  const images = [
-    {
-      src: siteConfig.about.image,
-      alt: tc("content.gallery.4.alt", "Trehus i Bergen"),
-    },
-    {
-      src: siteConfig.gallery.images[0]?.src ?? "/placeholder.svg",
-      alt: tc("content.gallery.0.alt", "Tømrerarbeid på bolig under rehabilitering"),
-    },
-    {
-      src: siteConfig.services[1]?.image ?? "/placeholder.svg",
-      alt: tc("content.gallery.1.alt", "Takarbeid på bolig"),
-    },
-  ];
-
   return (
     <main className="w-full bg-white text-foreground">
       <section className="relative isolate flex h-[45svh] min-h-[320px] w-full items-center justify-center overflow-hidden text-white">
@@ -71,32 +56,41 @@ export function AboutPage() {
 
       <section className="w-full bg-white py-16 md:py-24">
         <div className="mx-auto max-w-[1500px] px-4 md:px-8">
-          <Reveal
-            stagger
-            staggerAmount={0.08}
-            className="grid gap-4 md:grid-cols-3"
-          >
-            {images.map((image, index) => (
-              <div
-                key={`${image.src}-${index}`}
-                className="relative aspect-[4/3] overflow-hidden bg-white"
-              >
+          {/* Mobile only: single image above text */}
+          <Reveal className="mb-12 md:hidden">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
+              <Image
+                src={siteConfig.about.image}
+                alt={tc("content.gallery.4.alt", "Trehus i Bergen")}
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
+
+          {/* Text — always shown; on desktop sits above the image grid */}
+          <Reveal className="mb-12 md:mb-16">
+            <p className="text-lg leading-relaxed text-muted-foreground md:text-xl">
+              {localizedBody.join(" ")}
+            </p>
+          </Reveal>
+
+          {/* Desktop only: 3 gallery images side by side */}
+          <Reveal stagger staggerAmount={0.08} className="hidden md:grid md:grid-cols-3 gap-4">
+            {siteConfig.gallery.images.slice(0, 3).map((img, i) => (
+              <div key={i} className="relative aspect-[4/3] overflow-hidden bg-white">
                 <Image
-                  src={image.src}
-                  alt={image.alt}
+                  src={img.src}
+                  alt={img.alt}
                   fill
                   loading="lazy"
-                  sizes="(min-width: 768px) 33vw, 100vw"
+                  sizes="33vw"
                   className="object-cover"
                 />
               </div>
             ))}
-          </Reveal>
-
-          <Reveal className="mt-12">
-            <p className="text-lg leading-relaxed text-muted-foreground md:text-xl">
-              {localizedBody.join(" ")}
-            </p>
           </Reveal>
         </div>
       </section>
@@ -104,7 +98,7 @@ export function AboutPage() {
       {approvals && approvalsHeadline && approvalsBody && approvalsLinkLabel && (
         <section className="w-full bg-accent py-14 text-accent-foreground md:py-20">
           <div className="mx-auto grid max-w-[1500px] items-center gap-8 px-4 md:grid-cols-[260px_1fr_auto] md:px-8">
-            <div className="flex justify-start">
+            <div className="flex justify-center md:justify-start">
               <Image
                 src="/badges/godkjent-for-ansvarsrett.svg"
                 alt={approvalsHeadline}

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -28,8 +28,27 @@ export function About() {
   return (
     <section id="about" className="w-full bg-white py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-4 md:px-8">
-        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
-          <Reveal direction="left" className="relative isolate aspect-square w-full overflow-hidden bg-white">
+        {/*
+          Mobile (flex-col):  1. badge+h2  →  2. image  →  3. body+button
+          Desktop (lg:grid):  image (col1, row1-2)  |  badge+h2 (col2, row1)
+                                                       body+button (col2, row2)
+        */}
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:gap-12">
+          {/* 1 — Badge + headline */}
+          <Reveal className="flex flex-col items-center md:items-start bg-white p-6 md:p-10 lg:col-start-2 lg:row-start-1">
+            <p className="inline-flex w-fit bg-primary px-5 py-3 text-3xl font-bold tracking-tight text-primary-foreground md:px-6 md:text-5xl">
+              {t("nav.about")}
+            </p>
+            <h2 className="mt-4 text-xl font-bold tracking-tight text-foreground md:text-2xl text-center md:text-left">
+              {localizedHeadline}
+            </h2>
+          </Reveal>
+
+          {/* 2 — Image */}
+          <Reveal
+            direction="left"
+            className="relative isolate aspect-square w-full overflow-hidden bg-white lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:aspect-auto lg:min-h-[560px]"
+          >
             <Image
               src={image}
               alt={localizedHeadline}
@@ -46,7 +65,7 @@ export function About() {
               }}
             />
             {approvals && approvalsHeadline && approvalsBody && (
-              <div className="absolute inset-x-0 bottom-0 z-20 bg-black/85 p-4 text-white md:p-6">
+              <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/75 to-transparent p-4 text-white md:p-6">
                 <div className="flex items-end gap-4">
                   <Image
                     src="/badges/godkjent-for-ansvarsrett-white.png"
@@ -68,21 +87,14 @@ export function About() {
             )}
           </Reveal>
 
-          <Reveal className="flex w-full flex-col justify-center bg-white p-6 md:p-10 lg:aspect-square">
-            <p className="inline-flex w-fit bg-primary px-5 py-3 text-3xl font-bold tracking-tight text-primary-foreground md:px-6 md:text-5xl">
-              {t("nav.about")}
-            </p>
-            <h2 className="mt-4 text-xl font-bold tracking-tight text-foreground md:text-2xl">
-              {localizedHeadline}
-            </h2>
-
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+          {/* 3 — Body + button */}
+          <Reveal className="bg-white p-8 md:p-10 lg:col-start-2 lg:row-start-2">
+            <div className="space-y-4 text-lg leading-relaxed text-muted-foreground md:text-xl">
               {localizedBody.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>
-
-            <div className="mt-7">
+            <div className="mt-7 flex justify-center md:justify-start">
               <Button asChild className="h-11 px-6">
                 <Link href="/om-oss" className="inline-flex items-center gap-2">
                   {t("cta.learnMore")}

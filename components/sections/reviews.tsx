@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Star } from "lucide-react";
 
@@ -34,16 +34,13 @@ export function Reviews() {
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <Reveal className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
-            <span className="inline-flex bg-primary px-5 py-3 text-3xl font-bold tracking-tight text-primary-foreground md:px-6 md:text-5xl">
-              {t("nav.reviews")}
-            </span>
-            <p className="mt-4 text-base font-medium text-muted-foreground md:text-lg">
+            <span className="inline-flex bg-primary px-5 py-3 text-2xl font-bold tracking-tight text-primary-foreground md:px-6 md:text-3xl">
               {t("section.customerReviewsPrompt")}
-            </p>
+            </span>
           </div>
 
           {safePlatforms.length > 0 && (
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col md:flex-row md:flex-wrap items-stretch md:items-center gap-3">
               {safePlatforms.map((platform) => (
                 <ReviewPlatformBadge key={platform.name} platform={platform} />
               ))}
@@ -92,21 +89,13 @@ function ReviewPlatformBadge({ platform }: { platform: ReviewPlatform }) {
       href={platform.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="review-platform flex items-center gap-3 border border-border bg-white px-4 py-3 transition-colors hover:bg-white"
+      className="review-platform flex w-full md:flex-1 md:min-w-[150px] items-center gap-3 border border-border bg-white px-4 py-3 h-[72px] transition-colors hover:bg-white"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={platform.logo} alt={platform.name} className="h-10 w-10 object-contain" />
-      <div className="flex items-center gap-2 whitespace-nowrap">
-        <span className="text-sm font-semibold text-foreground">{platform.name}</span>
-        {platform.count > 0 && (
-          <>
-            <span className="text-sm font-semibold text-foreground">{platform.rating}</span>
-            <span className="text-xs text-muted-foreground">
-              ({t("rating.reviews", { count: platform.count })})
-            </span>
-          </>
-        )}
-      </div>
+      <img src={platform.logo} alt={platform.name} className="h-8 w-auto object-contain" />
+      <span className="whitespace-nowrap text-sm text-muted-foreground">
+        ({t("rating.reviews", { count: platform.count })})
+      </span>
     </a>
   );
 }
@@ -117,31 +106,27 @@ function ReviewCard({ review }: { review: Review }) {
   const reviewText = tc(`content.reviews.items.${review.id}.text`, review.text);
 
   return (
-    <article className="review-card flex w-full shrink-0 flex-col border border-border bg-white p-6 md:min-h-[260px] md:w-[320px] md:p-7">
-      <div className="flex items-center gap-1" aria-label={t("rating.outOfFive", { count: review.rating })}>
+    <article className="flex w-full shrink-0 flex-col border border-border bg-white p-6 md:min-h-[260px] md:w-[320px] md:p-7">
+      <div
+        className="flex items-center gap-1"
+        aria-label={t("rating.outOfFive", { count: review.rating })}
+      >
         {Array.from({ length: 5 }).map((_, i) => (
-          <span
-            key={i}
-            className="flex h-7 w-7 items-center justify-center bg-accent"
-          >
+          <span key={i} className="flex h-7 w-7 items-center justify-center bg-accent">
             <Star
               className={cn(
                 "h-4 w-4",
-                i < review.rating
-                  ? "fill-white text-white"
-                  : "fill-white/30 text-white/30",
+                i < review.rating ? "fill-white text-white" : "fill-white/30 text-white/30",
               )}
             />
           </span>
         ))}
       </div>
 
-      <p className="mt-5 flex-1 text-base leading-relaxed text-muted-foreground">
-        {reviewText}
-      </p>
+      <p className="mt-5 flex-1 text-base leading-relaxed text-muted-foreground">{reviewText}</p>
 
       <div className="mt-8 flex items-center gap-3">
-        <div className="review-avatar flex h-10 w-10 shrink-0 items-center justify-center bg-white text-sm font-semibold text-foreground">
+        <div className="review-avatar flex h-10 w-10 shrink-0 items-center justify-center bg-muted text-sm font-semibold text-foreground">
           {review.name
             .split(" ")
             .map((word) => word[0])

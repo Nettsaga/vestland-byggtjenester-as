@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useLenis } from "@/components/providers/smooth-scroll";
+import { getScrollOffset } from "@/lib/scroll-offset";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -60,7 +61,7 @@ export function ScrollToTop() {
         // Two RAFs lets the new route's DOM paint before scroll target lookup.
         requestAnimationFrame(() => {
           lenis.scrollTo(hash, {
-            offset: window.innerWidth >= 768 ? -140 : -90,
+            offset: getScrollOffset(),
             immediate: false,
           });
           lenis.start();

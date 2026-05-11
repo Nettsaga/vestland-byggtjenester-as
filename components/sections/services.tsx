@@ -29,7 +29,7 @@ export function Services({ heading, description }: ServicesProps) {
   return (
     <section id="services" className="w-full bg-white py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-4 md:px-8">
-        <Reveal className="max-w-3xl">
+        <Reveal className="flex flex-col items-center md:items-start max-w-3xl">
           <h2 className="inline-flex bg-accent px-5 py-3 text-3xl font-bold leading-[1.05] tracking-tight text-accent-foreground md:px-6 md:text-5xl">
             {resolvedHeading}
           </h2>
@@ -68,7 +68,7 @@ interface ServiceCardProps {
   index: number;
 }
 
-function ServiceCard({ service, index }: ServiceCardProps) {
+export function ServiceCard({ service, index }: ServiceCardProps) {
   const { t } = useTranslation();
   const tc = useLocalizedContent();
   const localizedTitleValue = tc(`content.services.${index}.title`, service.title);

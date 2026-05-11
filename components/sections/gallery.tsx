@@ -84,7 +84,7 @@ export function Gallery() {
             </h2>
           </div>
           {showGalleryControls && (
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               <button
                 type="button"
                 onClick={prevPreview}

@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { siteConfig } from "@/lib/site-config";
 import { useLocalizedContent } from "@/components/providers/i18n-provider";
 import { useLenis } from "@/hooks/use-lenis";
+import { getScrollOffset } from "@/lib/scroll-offset";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,13 @@ export function Hero() {
 
   useEffect(() => {
     if (!contentRef.current) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Make all hero elements immediately visible with no animation
+      gsap.set("[data-hero-anim]", { opacity: 1, y: 0 });
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.from("[data-hero-anim]", {
         opacity: 0,
@@ -51,9 +59,8 @@ export function Hero() {
       if (!href.startsWith("#")) return;
       e.preventDefault();
       if (lenis) {
-        // Offsets mirror the global scroll-margin-top (140px / 90px).
         lenis.scrollTo(href, {
-          offset: window.innerWidth >= 768 ? -140 : -90,
+          offset: getScrollOffset(),
         });
       } else if (typeof window !== "undefined") {
         const el = document.querySelector(href);
@@ -75,7 +82,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative isolate flex min-h-[100svh] w-full items-center overflow-hidden text-white"
+      className="relative isolate flex min-h-[100svh] w-full items-end overflow-hidden text-white"
     >
       <div className="absolute inset-0 -z-10">
         {images.map((src, i) => (
@@ -96,12 +103,12 @@ export function Hero() {
             />
           </div>
         ))}
-        {/* Mandatory 50% dark overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        {/* Gradient overlay: stronger at bottom for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
       </div>
 
-      <div className="mx-auto w-full max-w-[1500px] px-4 md:px-8 py-32 md:py-40">
-        <div className="max-w-3xl" ref={contentRef}>
+      <div className="mx-auto w-full max-w-[1500px] px-4 md:px-8 pb-16 pt-40 md:pb-24 md:pt-48">
+        <div className="max-w-2xl" ref={contentRef}>
           <h1 data-hero-anim className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
             {localizedHeadline}
           </h1>
@@ -109,8 +116,8 @@ export function Hero() {
             {localizedSubheadline}
           </p>
 
-          <div data-hero-anim className="mt-10 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg" className="h-12 px-7 text-base">
+          <div data-hero-anim className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2">
+            <Button asChild size="lg" className="h-10 px-4 text-sm md:h-12 md:px-7 md:text-base">
               <a
                 href={primaryCta.href}
                 onClick={(e) => handleAnchorClick(e, primaryCta.href)}
@@ -123,7 +130,7 @@ export function Hero() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 px-7 text-base bg-transparent border-white text-white hover:bg-background hover:text-foreground"
+                className="h-10 px-4 text-sm md:h-12 md:px-7 md:text-base bg-transparent border-white text-white hover:bg-background hover:text-foreground"
               >
                 <a
                   href={secondaryCta.href}

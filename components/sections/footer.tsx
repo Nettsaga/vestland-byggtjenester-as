@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback } from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
 
@@ -58,13 +59,28 @@ export function Footer() {
   );
 
   return (
-    <footer id="contact" className="w-full bg-foreground text-background">
+    <footer id="contact" className="w-full bg-[#000000] text-background">
       <div className="mx-auto max-w-[1500px] px-4 md:px-8 py-14 md:py-20">
         <div className="grid gap-10 md:grid-cols-3 md:gap-12">
           {/* Brand */}
           <div>
-            <div className="text-2xl font-bold tracking-tight">{name}</div>
-            <div className="mt-1 text-xs font-medium tracking-widest uppercase opacity-70">
+            <div className="flex items-center gap-5">
+              <Image
+                src="/logo.png"
+                alt={name}
+                width={150}
+                height={52}
+                className="h-10 w-auto brightness-0 invert"
+              />
+              <Image
+                src="/badges/godkjent-for-ansvarsrett-white.png"
+                alt="Sentral godkjenning for ansvarsrett"
+                width={120}
+                height={103}
+                className="h-14 w-auto brightness-0 invert opacity-80"
+              />
+            </div>
+            <div className="mt-3 text-xs font-medium tracking-widest uppercase opacity-70">
               {localizedCompanyTagline}
             </div>
             <p className="mt-5 text-sm leading-relaxed opacity-80 max-w-xs">
@@ -87,6 +103,7 @@ export function Footer() {
                 ))}
               </div>
             )}
+
           </div>
 
           {/* Quick links */}

@@ -5,6 +5,7 @@ import { Services } from "@/components/sections/services";
 import { About } from "@/components/sections/about";
 import { Gallery } from "@/components/sections/gallery";
 import { Reviews } from "@/components/sections/reviews";
+import { EditorialCta } from "@/components/sections/editorial-cta";
 import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <Services />
       <Gallery />
       <Reviews />
+      <EditorialCta />
       <Footer />
     </>
   );

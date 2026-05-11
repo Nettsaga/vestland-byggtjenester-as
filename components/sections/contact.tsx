@@ -59,7 +59,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="w-full bg-background pt-20 md:pt-28">
+    <section id="contact" className="w-full bg-background py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-4 md:px-8">
         <Reveal className="max-w-2xl">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">

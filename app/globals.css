@@ -158,15 +158,15 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent);
+  background: var(--primary);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklch, var(--accent) 80%, var(--foreground));
+  background: color-mix(in oklch, var(--primary) 85%, black);
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
+  scrollbar-color: var(--primary) transparent;
 }
 
 /* Reviews marquee - two rows scrolling in opposite directions. */

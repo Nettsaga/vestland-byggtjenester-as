@@ -1,13 +1,14 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import type { Service } from "@/lib/site-config";
-import { useTranslation } from "@/components/providers/i18n-provider";
-import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/lib/site-config";
+import { useTranslation, useLocalizedContent } from "@/components/providers/i18n-provider";
 import { Reveal } from "@/components/ui/reveal";
+import { EditorialCta } from "@/components/sections/editorial-cta";
 
 interface ServiceDetailProps {
   service: Service;
@@ -15,6 +16,8 @@ interface ServiceDetailProps {
 
 export function ServiceDetail({ service }: ServiceDetailProps) {
   const { t } = useTranslation();
+  const tc = useLocalizedContent();
+  const serviceIndex = siteConfig.services.findIndex((s) => s.id === service.id);
   return (
     <article className="w-full">
       {/* Banner */}
@@ -28,7 +31,6 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
             sizes="100vw"
             className="object-cover"
           />
-          {/* Mandatory 50% dark overlay */}
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
@@ -46,7 +48,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
         </Reveal>
       </div>
 
-      {/* Breadcrumb â€” Home / Services / {title}. */}
+      {/* Breadcrumb */}
       <div className="w-full bg-background border-b border-border">
         <div className="mx-auto max-w-[1500px] px-4 md:px-8">
           <nav
@@ -68,108 +70,101 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
             </Link>
             <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
             <span aria-current="page" className="font-medium text-foreground">
-              {service.title}
+              {tc(`content.services.${serviceIndex}.title`, service.title)}
             </span>
           </nav>
         </div>
       </div>
 
-      {/* Body */}
+      {/* Description + sections */}
       <div className="w-full bg-background py-16 md:py-24">
         <div className="mx-auto max-w-[1500px] px-4 md:px-8">
-          <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
-            <Reveal className="lg:col-span-2 space-y-6 text-base md:text-lg leading-relaxed text-muted-foreground">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-                {t("serviceDetail.overview")}
-              </h2>
-              {service.description.split(/\n\n+/).map((paragraph, i) => (
+          <Reveal className="space-y-6 text-base md:text-lg leading-relaxed text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+              {t("serviceDetail.overview")}
+            </h2>
+            {tc(`content.services.${serviceIndex}.description`, service.description)
+              .split(/\n\n+/)
+              .map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
-            </Reveal>
+          </Reveal>
 
-            <Reveal direction="right" as="aside" className="space-y-8">
-              {service.features && service.features.length > 0 && (
-                <div className="bg-white p-6 border border-border">
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {t("serviceDetail.whatsIncluded")}
-                  </h3>
-                  <ul className="mt-4 space-y-2.5 text-sm">
-                    {service.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span className="text-foreground">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
+          {/* 3 images side by side */}
+          {service.images && service.images.length > 0 && (
+            <Reveal stagger staggerAmount={0.1} className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {service.images.slice(0, 3).map((src, i) => (
+                <div key={i} className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={src}
+                    alt={`${service.title} ${i + 1}`}
+                    fill
+                    loading="lazy"
+                    sizes="(min-width: 640px) 33vw, 100vw"
+                    className="object-cover"
+                  />
                 </div>
-              )}
-
-              <div className="bg-foreground text-background p-6">
-                <h3 className="text-lg font-semibold">
-                  {t("serviceDetail.readyToStart")}
-                </h3>
-                <p className="mt-2 text-sm opacity-85">
-                  {t("serviceDetail.noObligationQuote")}
-                </p>
-                <Button
-                  asChild
-                  variant="secondary"
-                  className="mt-5 w-full h-11"
-                >
-                  <Link
-                    href="/#contact"
-                    className="inline-flex items-center justify-center gap-2"
-                  >
-                    {t("cta.getQuote")}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
+              ))}
             </Reveal>
-          </div>
+          )}
 
+          {/* Rich sub-sections (e.g. monteringsarbeid) */}
+          {service.sections && service.sections.length > 0 && (
+            <Reveal stagger staggerAmount={0.1} className="mt-16 grid gap-12 md:grid-cols-2">
+              {service.sections.map((section, sectionIndex) => {
+                const localTitle = tc(
+                  `content.services.${serviceIndex}.sections.${sectionIndex}.title`,
+                  section.title,
+                );
+                const localBody = tc(
+                  `content.services.${serviceIndex}.sections.${sectionIndex}.body`,
+                  section.body,
+                );
+                return (
+                  <div key={section.title}>
+                    {section.image && (
+                      <div className="relative mb-4 aspect-[16/9] overflow-hidden">
+                        <Image
+                          src={section.image}
+                          alt={localTitle}
+                          fill
+                          loading="lazy"
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <h3 className="text-xl font-bold tracking-tight text-foreground">
+                      {localTitle}
+                    </h3>
+                    <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                      {localBody}
+                    </p>
+                    {section.bullets && section.bullets.length > 0 && (
+                      <ul className="mt-4 space-y-2">
+                        {section.bullets.map((bullet, bulletIndex) => {
+                          const localBullet = tc(
+                            `content.services.${serviceIndex}.sections.${sectionIndex}.bullets.${bulletIndex}`,
+                            bullet,
+                          );
+                          return (
+                            <li key={bullet} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                              {localBullet}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </Reveal>
+          )}
         </div>
       </div>
 
-      {/* Pre-footer CTA */}
-      <section className="w-full bg-foreground text-background">
-        <div className="mx-auto max-w-[1500px] px-4 md:px-8 py-16 md:py-24">
-          <Reveal className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-2xl">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                {t("serviceDetail.readyToGetStartedWith")} {service.title}?
-              </h2>
-              <p className="mt-4 text-base md:text-lg opacity-80">
-                {t("serviceDetail.preFooterDescription")}
-              </p>
-            </div>
-            {/* Two-button pre-footer: primary goes to home `/#contact` (cross-page
-                hash, resolved by the home ScrollToTop hook); secondary returns to
-                `/services` so users can pivot to a sibling service. */}
-            <div className="flex flex-wrap items-center gap-3">
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="h-12 px-7 text-base"
-              >
-                <Link href="/#contact" className="inline-flex items-center gap-2">
-                  {t("cta.getQuote")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 px-7 text-base bg-transparent border-background/40 text-background hover:bg-background hover:text-foreground"
-              >
-                <Link href="/services">{t("cta.allServices")}</Link>
-              </Button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <EditorialCta variant="page" />
     </article>
   );
 }

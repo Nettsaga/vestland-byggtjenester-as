@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X, Phone, Mail } from "lucide-react";
 
 import { siteConfig } from "@/lib/site-config";
+import { getScrollOffset } from "@/lib/scroll-offset";
 import {
   useTranslation,
   useLocalizedContent,
@@ -15,6 +16,7 @@ import {
 import type { TranslationKey } from "@/lib/i18n";
 import { useLenis } from "@/hooks/use-lenis";
 import { useLockScroll } from "@/hooks/use-lock-scroll";
+import { useScrolled } from "@/hooks/use-scrolled";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SocialIcon } from "@/components/sections/_social-icon";
@@ -30,7 +32,7 @@ const NAV_LINKS: NavLink[] = [
   { key: "nav.services", href: "#services" },
   { key: "nav.gallery", href: "/galleri" },
   { key: "nav.reviews", href: "#reviews" },
-  { key: "nav.contact", href: "#contact" },
+  { key: "nav.contact", href: "/kontakt" },
 ];
 
 export function Header(_props: { forceSolid?: boolean } = {}) {
@@ -43,6 +45,7 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const scrolled = useScrolled(60);
 
   useLockScroll(mobileOpen);
 
@@ -55,7 +58,7 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
     (target: string) => {
       if (lenis) {
         lenis.scrollTo(target, {
-          offset: window.innerWidth >= 768 ? -140 : -90,
+          offset: getScrollOffset(),
         });
       } else if (typeof window !== "undefined") {
         const el = document.querySelector(target);
@@ -88,10 +91,10 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
   return (
     <>
       <header
+        data-header
         className={cn(
-          "fixed left-0 right-0 z-40 transition-all duration-300",
-          "top-0 md:top-10",
-          "bg-white text-foreground shadow-sm",
+          "fixed left-0 right-0 top-0 md:top-10 z-40 transition-all duration-500",
+          scrolled ? "bg-white text-foreground shadow-sm" : "bg-transparent text-white",
         )}
       >
         <div className="mx-auto max-w-[1500px] px-4 md:px-8">
@@ -113,7 +116,7 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
                 width={150}
                 height={52}
                 priority
-                className="h-10 w-auto"
+                className={cn("h-10 w-auto transition-all duration-500", !scrolled && "brightness-0 invert")}
               />
             </Link>
 
@@ -151,7 +154,12 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
               <Button
                 asChild
                 size="sm"
-                className="hidden h-10 px-5 text-sm md:inline-flex"
+                className={cn(
+                  "hidden h-10 px-5 text-sm md:inline-flex transition-colors",
+                  scrolled
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                    : "bg-white text-foreground hover:bg-white/90",
+                )}
               >
                 <a
                   href="#contact"
@@ -194,14 +202,13 @@ export function Header(_props: { forceSolid?: boolean } = {}) {
         aria-hidden={!mobileOpen}
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-          <div className="flex flex-col leading-tight">
-            <span className="text-base font-bold tracking-tight">
-              {company.name}
-            </span>
-            <span className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground">
-              {tc("content.company.tagline", company.tagline)}
-            </span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt={company.name}
+            width={120}
+            height={42}
+            className="h-9 w-auto"
+          />
           <button
             type="button"
             onClick={() => setMobileOpen(false)}

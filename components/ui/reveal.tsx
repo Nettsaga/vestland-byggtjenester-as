@@ -70,8 +70,15 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    const targets = stagger ? Array.from(el.children) : el;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Make all children immediately visible with no animation
+      gsap.set(targets, { opacity: 1, y: 0, x: 0 });
+      return;
+    }
+
     const ctx = gsap.context(() => {
-      const targets = stagger ? Array.from(el.children) : el;
       const offset = offsetForDirection(direction, distance);
 
       gsap.from(targets, {
