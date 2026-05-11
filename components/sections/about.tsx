@@ -26,7 +26,7 @@ export function About() {
     : null;
 
   return (
-    <section id="about" className="w-full bg-white py-20 md:py-28">
+    <section id="about" className="w-full overflow-x-hidden bg-white py-20 md:py-28">
       <div className="mx-auto max-w-[1500px] px-4 md:px-8">
         {/*
           Mobile (flex-col):  1. badge+h2  →  2. image  →  3. body+button

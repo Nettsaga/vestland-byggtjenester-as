@@ -135,6 +135,11 @@
   }
 }
 
+/* Prevent horizontal scroll caused by off-screen fixed/translated elements on mobile. */
+html, body {
+  overflow-x: hidden;
+}
+
 /* Flat sharp-edge design — zero border-radius everywhere. */
 *, *::before, *::after {
   border-radius: 0 !important;

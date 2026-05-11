@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(Start-Sleep -Seconds 4)",
+      "Bash(Get-Content \"C:\\\\Users\\\\ADMIN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Projects-playground-vestland-byggtjenester-as\\\\12b20dde-28ea-49e0-a797-a97cf89b0f3b\\\\tasks\\\\bg6mgmint.output\" -Tail 10)",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate"
+    ]
+  }
+}
