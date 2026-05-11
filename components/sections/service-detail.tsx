@@ -43,7 +43,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
             {t("nav.services")}
           </p>
           <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
-            {service.title}
+            {tc(`content.services.${serviceIndex}.title`, service.title)}
           </h1>
         </Reveal>
       </div>
@@ -97,7 +97,7 @@ export function ServiceDetail({ service }: ServiceDetailProps) {
                 <div key={i} className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={src}
-                    alt={`${service.title} ${i + 1}`}
+                    alt={`${tc(`content.services.${serviceIndex}.title`, service.title)} ${i + 1}`}
                     fill
                     loading="lazy"
                     sizes="(min-width: 640px) 33vw, 100vw"
