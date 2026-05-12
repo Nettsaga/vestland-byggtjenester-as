@@ -89,10 +89,10 @@ function ReviewPlatformBadge({ platform }: { platform: ReviewPlatform }) {
       href={platform.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="review-platform flex w-full md:flex-1 md:min-w-[150px] items-center gap-3 border border-border bg-white px-4 py-3 h-[72px] transition-colors hover:bg-white"
+      className="review-platform flex w-full md:flex-1 md:min-w-[150px] flex-wrap items-center gap-x-3 gap-y-1 border border-border bg-white px-4 py-3 min-h-[72px] transition-colors hover:bg-white"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={platform.logo} alt={platform.name} className="h-8 w-auto object-contain" />
+      <img src={platform.logo} alt={platform.name} className="h-8 w-auto max-w-[140px] shrink-0 object-contain" />
       <span className="whitespace-nowrap text-sm text-muted-foreground">
         ({t("rating.reviews", { count: platform.count })})
       </span>
